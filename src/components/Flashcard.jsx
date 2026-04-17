@@ -25,7 +25,7 @@ function Flashcard({ front, back }) {
           transform: isFlipped ? "rotateY(180deg)" : "rotateY(0)",
         }}
       >
-        {/* FRONT */}
+        {/* FRONT - Cara frontal */}
         <div
           style={{
             position: "absolute",
@@ -55,10 +55,21 @@ function Flashcard({ front, back }) {
           >
             📖 FRONT
           </div>
-          <div dangerouslySetInnerHTML={{ __html: front }} />
+          <div
+            className="flashcard-content"
+            dangerouslySetInnerHTML={{ __html: front }}
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
         </div>
 
-        {/* BACK */}
+        {/* BACK - Cara trasera */}
         <div
           style={{
             position: "absolute",
@@ -89,7 +100,18 @@ function Flashcard({ front, back }) {
           >
             💡 BACK
           </div>
-          <div dangerouslySetInnerHTML={{ __html: back }} />
+          <div
+            className="flashcard-content"
+            dangerouslySetInnerHTML={{ __html: back }}
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
         </div>
       </div>
     </div>

@@ -60,3 +60,37 @@ button {
 .theme-toggle:hover {
   transform: scale(1.1);
 }
+.tag {
+  background: var(--accent);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  display: inline-block;
+  margin: 0.1rem;
+}
+
+.flashcard-content h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.flashcard-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.flashcard-content h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.flashcard-content ul {
+  text-align: left;
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.flashcard-content li {
+  margin: 0.5rem 0;
+}

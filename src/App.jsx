@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import FolderSelector from "./components/FolderSelector";
 import StudyMode from "./components/StudyMode";
 import Stats from "./components/Stats";
+import TagFilter from "./components/TagFilter";
 
 function App() {
-  const [flashcards, setFlashcards] = useState([]);
+  const [allFlashcards, setAllFlashcards] = useState([]);
+  const [filteredFlashcards, setFilteredFlashcards] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [studyStarted, setStudyStarted] = useState(false);
+  const [currentScreen, setCurrentScreen] = useState("folder"); // 'folder', 'tags', 'study'
   const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
@@ -23,32 +26,68 @@ function App() {
   };
 
   const handleFolderLoaded = (cards) => {
-    setFlashcards(cards);
+    setAllFlashcards(cards);
+    setFilteredFlashcards(cards);
+    setSelectedTags([]);
     setCurrentIndex(0);
-    setStudyStarted(true);
+    setCurrentScreen("tags"); // Ir a selección de tags
+  };
+
+  const handleTagsSelected = (tags) => {
+    setSelectedTags(tags);
+
+    if (tags.length === 0) {
+      setFilteredFlashcards(allFlashcards);
+    } else {
+      const filtered = allFlashcards.filter((card) =>
+        card.tags.some((tag) => tags.includes(tag)),
+      );
+      setFilteredFlashcards(filtered);
+    }
+
+    setCurrentIndex(0);
+  };
+
+  const handleStartStudy = () => {
+    if (filteredFlashcards.length > 0) {
+      setCurrentScreen("study");
+    }
+  };
+
+  const handleBackToTags = () => {
+    setCurrentScreen("tags");
+  };
+
+  const handleBackToFolder = () => {
+    setAllFlashcards([]);
+    setFilteredFlashcards([]);
+    setSelectedTags([]);
+    setCurrentScreen("folder");
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % flashcards.length);
+    setCurrentIndex((prev) => (prev + 1) % filteredFlashcards.length);
   };
 
   const handlePrev = () => {
     setCurrentIndex(
-      (prev) => (prev - 1 + flashcards.length) % flashcards.length,
+      (prev) =>
+        (prev - 1 + filteredFlashcards.length) % filteredFlashcards.length,
     );
   };
 
   const handleShuffle = () => {
-    const shuffled = [...flashcards];
+    const shuffled = [...filteredFlashcards];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    setFlashcards(shuffled);
+    setFilteredFlashcards(shuffled);
     setCurrentIndex(0);
   };
 
-  if (!studyStarted) {
+  // Pantalla de selección de carpeta
+  if (currentScreen === "folder") {
     return (
       <>
         <button className="theme-toggle" onClick={toggleTheme}>
@@ -59,6 +98,25 @@ function App() {
     );
   }
 
+  // Pantalla de selección de tags
+  if (currentScreen === "tags") {
+    return (
+      <>
+        <button className="theme-toggle" onClick={toggleTheme}>
+          {theme === "dark" ? "☀️" : "🌙"}
+        </button>
+        <TagFilter
+          flashcards={allFlashcards}
+          selectedTags={selectedTags}
+          onTagsSelected={handleTagsSelected}
+          onStartStudy={handleStartStudy}
+          onBack={handleBackToFolder}
+        />
+      </>
+    );
+  }
+
+  // Modo estudio
   return (
     <>
       <button className="theme-toggle" onClick={toggleTheme}>
@@ -66,12 +124,13 @@ function App() {
       </button>
       <Stats
         current={currentIndex + 1}
-        total={flashcards.length}
+        total={filteredFlashcards.length}
         onShuffle={handleShuffle}
-        onBack={() => setStudyStarted(false)}
+        onBack={handleBackToTags}
+        selectedTags={selectedTags}
       />
       <StudyMode
-        flashcard={flashcards[currentIndex]}
+        flashcard={filteredFlashcards[currentIndex]}
         onNext={handleNext}
         onPrev={handlePrev}
       />

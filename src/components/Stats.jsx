@@ -1,6 +1,6 @@
 import React from "react";
 
-function Stats({ current, total, onShuffle, onBack }) {
+function Stats({ current, total, onShuffle, onBack, selectedTags = [] }) {
   return (
     <div
       style={{
@@ -13,6 +13,7 @@ function Stats({ current, total, onShuffle, onBack }) {
         alignItems: "center",
         gap: "1rem",
         zIndex: 100,
+        flexWrap: "wrap",
       }}
     >
       <button
@@ -23,21 +24,56 @@ function Stats({ current, total, onShuffle, onBack }) {
           padding: "0.5rem 1rem",
           borderRadius: "8px",
           color: "var(--text-primary)",
+          cursor: "pointer",
         }}
       >
-        ← Cambiar carpeta
+        ← Cambiar tags
       </button>
 
       <div
         style={{
-          background: "var(--bg-secondary)",
-          padding: "0.5rem 1rem",
-          borderRadius: "20px",
-          border: "1px solid var(--border)",
-          fontSize: "0.9rem",
+          display: "flex",
+          gap: "0.5rem",
+          alignItems: "center",
+          flexWrap: "wrap",
         }}
       >
-        📊 {current} / {total}
+        {selectedTags.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            {selectedTags.map((tag) => (
+              <span
+                key={tag}
+                style={{
+                  background: "var(--accent)",
+                  color: "white",
+                  padding: "0.25rem 0.75rem",
+                  borderRadius: "12px",
+                  fontSize: "0.75rem",
+                }}
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div
+          style={{
+            background: "var(--bg-secondary)",
+            padding: "0.5rem 1rem",
+            borderRadius: "20px",
+            border: "1px solid var(--border)",
+            fontSize: "0.9rem",
+          }}
+        >
+          📊 {current} / {total}
+        </div>
       </div>
 
       <button
@@ -48,6 +84,7 @@ function Stats({ current, total, onShuffle, onBack }) {
           padding: "0.5rem 1rem",
           borderRadius: "8px",
           color: "var(--text-primary)",
+          cursor: "pointer",
         }}
       >
         🎲 Barajar
