@@ -9,19 +9,18 @@ function App() {
   const [filteredFlashcards, setFilteredFlashcards] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentScreen, setCurrentScreen] = useState("folder"); // 'folder', 'tags', 'study'
-  const [theme, setTheme] = useState("dark");
+  const [currentScreen, setCurrentScreen] = useState("folder");
+  const [colorTheme, setColorTheme] = useState("blue");
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme);
-    document.documentElement.setAttribute("data-theme", savedTheme);
+    const savedColorTheme = localStorage.getItem("colorTheme") || "blue";
+    setColorTheme(savedColorTheme);
+    document.documentElement.setAttribute("data-theme", savedColorTheme);
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
+  const changeColorTheme = (newTheme) => {
+    setColorTheme(newTheme);
+    localStorage.setItem("colorTheme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
   };
 
@@ -30,7 +29,7 @@ function App() {
     setFilteredFlashcards(cards);
     setSelectedTags([]);
     setCurrentIndex(0);
-    setCurrentScreen("tags"); // Ir a selección de tags
+    setCurrentScreen("tags");
   };
 
   const handleTagsSelected = (tags) => {
@@ -86,13 +85,53 @@ function App() {
     setCurrentIndex(0);
   };
 
+  // Selector de temas (versión simple)
+  const themes = [
+    { name: "blue", color: "#3b82f6", label: "Azul" },
+    { name: "gray", color: "#6b7280", label: "Gris" },
+    { name: "pink", color: "#ec489a", label: "Rosa" },
+    { name: "purple", color: "#8b5cf6", label: "Morado" },
+    { name: "red", color: "#dc2626", label: "Rojo" },
+  ];
+
   // Pantalla de selección de carpeta
   if (currentScreen === "folder") {
     return (
       <>
-        <button className="theme-toggle" onClick={toggleTheme}>
-          {theme === "dark" ? "☀️" : "🌙"}
-        </button>
+        <div
+          style={{
+            position: "fixed",
+            top: "1rem",
+            right: "1rem",
+            display: "flex",
+            gap: "0.5rem",
+            background: "var(--bg-secondary)",
+            padding: "0.5rem",
+            borderRadius: "30px",
+            border: "1px solid var(--border)",
+            zIndex: 100,
+          }}
+        >
+          {themes.map((theme) => (
+            <button
+              key={theme.name}
+              onClick={() => changeColorTheme(theme.name)}
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                background: theme.color,
+                border:
+                  colorTheme === theme.name
+                    ? "2px solid white"
+                    : "2px solid transparent",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              title={theme.label}
+            />
+          ))}
+        </div>
         <FolderSelector onFolderLoaded={handleFolderLoaded} />
       </>
     );
@@ -102,9 +141,40 @@ function App() {
   if (currentScreen === "tags") {
     return (
       <>
-        <button className="theme-toggle" onClick={toggleTheme}>
-          {theme === "dark" ? "☀️" : "🌙"}
-        </button>
+        <div
+          style={{
+            position: "fixed",
+            top: "1rem",
+            right: "1rem",
+            display: "flex",
+            gap: "0.5rem",
+            background: "var(--bg-secondary)",
+            padding: "0.5rem",
+            borderRadius: "30px",
+            border: "1px solid var(--border)",
+            zIndex: 100,
+          }}
+        >
+          {themes.map((theme) => (
+            <button
+              key={theme.name}
+              onClick={() => changeColorTheme(theme.name)}
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                background: theme.color,
+                border:
+                  colorTheme === theme.name
+                    ? "2px solid white"
+                    : "2px solid transparent",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              title={theme.label}
+            />
+          ))}
+        </div>
         <TagFilter
           flashcards={allFlashcards}
           selectedTags={selectedTags}
@@ -119,9 +189,20 @@ function App() {
   // Modo estudio
   return (
     <>
-      <button className="theme-toggle" onClick={toggleTheme}>
-        {theme === "dark" ? "☀️" : "🌙"}
-      </button>
+      <div
+        style={{
+          position: "fixed",
+          top: "1rem",
+          right: "1rem",
+          display: "flex",
+          gap: "0.5rem",
+          background: "var(--bg-secondary)",
+          padding: "0.5rem",
+          borderRadius: "30px",
+          border: "1px solid var(--border)",
+          zIndex: 100,
+        }}
+      ></div>
       <Stats
         current={currentIndex + 1}
         total={filteredFlashcards.length}

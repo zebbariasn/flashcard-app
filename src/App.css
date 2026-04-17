@@ -4,25 +4,65 @@
   box-sizing: border-box;
 }
 
-:root {
-  --bg-primary: #f5f5f7;
-  --bg-secondary: #ffffff;
-  --text-primary: #1a1a2e;
-  --text-secondary: #666;
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
-  --border: #e0e0e0;
-  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+/* Tema Azul (default) */
+:root,
+[data-theme="blue"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --border: #334155;
+  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] {
-  --bg-primary: #1a1a2e;
-  --bg-secondary: #16213e;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --accent: #818cf8;
-  --accent-hover: #6366f1;
-  --border: #2d3748;
+/* Tema Gris */
+[data-theme="gray"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --text-primary: #e5e5e5;
+  --text-secondary: #a3a3a3;
+  --accent: #6b7280;
+  --accent-hover: #4b5563;
+  --border: #404040;
+  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Tema Rosa */
+[data-theme="pink"] {
+  --bg-primary: #1a0b14;
+  --bg-secondary: #2d1321;
+  --text-primary: #fce4ec;
+  --text-secondary: #f48fb1;
+  --accent: #ec489a;
+  --accent-hover: #db2777;
+  --border: #4a1528;
+  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Tema Morado */
+[data-theme="purple"] {
+  --bg-primary: #0f0714;
+  --bg-secondary: #1a1025;
+  --text-primary: #f3e8ff;
+  --text-secondary: #c084fc;
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --border: #2e1a4a;
+  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Tema Rojo Oscuro */
+[data-theme="red"] {
+  --bg-primary: #1a0a0a;
+  --bg-secondary: #2d1313;
+  --text-primary: #fee2e2;
+  --text-secondary: #fca5a5;
+  --accent: #dc2626;
+  --accent-hover: #b91c1c;
+  --border: #4a1515;
+  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 body {
@@ -40,6 +80,55 @@ button {
   font-size: 1rem;
 }
 
+/* Theme selector styles */
+.theme-selector {
+  position: fixed;
+  top: 1rem;
+  right: 5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 100;
+  background: var(--bg-secondary);
+  padding: 0.5rem;
+  border-radius: 30px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+.theme-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.theme-btn:hover {
+  transform: scale(1.1);
+}
+
+.theme-btn.active {
+  border-color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.theme-btn.blue {
+  background: #3b82f6;
+}
+.theme-btn.gray {
+  background: #6b7280;
+}
+.theme-btn.pink {
+  background: #ec489a;
+}
+.theme-btn.purple {
+  background: #8b5cf6;
+}
+.theme-btn.red {
+  background: #dc2626;
+}
+
 .theme-toggle {
   position: fixed;
   top: 1rem;
@@ -55,34 +144,34 @@ button {
   font-size: 1.2rem;
   z-index: 100;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .theme-toggle:hover {
   transform: scale(1.1);
 }
-.tag {
-  background: var(--accent);
-  color: white;
-  padding: 0.2rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  display: inline-block;
-  margin: 0.1rem;
+
+/* Estilos para el contenido de las flashcards */
+.flashcard-content {
+  width: 100%;
 }
 
 .flashcard-content h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
+  color: var(--text-primary);
 }
 
 .flashcard-content h2 {
   font-size: 1.5rem;
   margin-bottom: 0.75rem;
+  color: var(--text-primary);
 }
 
 .flashcard-content h3 {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
+  color: var(--text-primary);
 }
 
 .flashcard-content ul {
@@ -93,4 +182,21 @@ button {
 
 .flashcard-content li {
   margin: 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.flashcard-content p {
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+}
+
+/* Estilos para tags dentro de las flashcards */
+.flashcard-content .tag {
+  background: var(--accent);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  display: inline-block;
+  margin: 0.1rem;
 }
